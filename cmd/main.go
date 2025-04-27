@@ -34,5 +34,7 @@ func main() {
 
 	router.GET("/users", UserController.GetUsers)
 
+	router.POST("/register", UserController.CreateUser)
+
 	router.Run(":8080")
 }
