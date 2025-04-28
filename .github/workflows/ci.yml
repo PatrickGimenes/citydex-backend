@@ -22,13 +22,11 @@ jobs:
       - name: Clear Go cache
         run: go clean -modcache
 
-      - name: Install golangci-lint
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.55.0
-          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+      - name: Install Staticcheck
+        run: go install honnef.co/go/tools/cmd/staticcheck@latest
 
-      - name: Run golangci-lint
-        run: golangci-lint run ./...
+      - name: Run Staticcheck
+        run: staticcheck ./...
 
       - name: Run tests
         run: go test -v ./...
