@@ -1,0 +1,43 @@
+linters:
+  enable:
+    - golint
+    - errcheck
+    - staticcheck
+    - stylecheck
+    - gocritic
+    - govet
+    - unused
+    - misspell
+  disable:
+    - bodyclose
+    - dupl
+    - lll
+    - gocyclo
+
+issues:
+  exclude:
+    - "Error return value is not checked.*"
+    - "declaration of.*is of type.*but.*"
+    - "should not use .*(fmt|print).*"
+
+  # Excluir arquivos específicos ou diretórios
+  exclude-rules:
+    - path: _test\.go
+      text: "no test code allowed"
+
+    - path: "migrations/*"
+      text: "skip migration files"
+
+run:
+  timeout: 5m
+  concurrency: 2
+  linters-settings:
+    golint:
+      min-confidence: 0.8
+    gocritic:
+      enable-all: false
+
+# Configuração de flags adicionais
+# gosec flag de segurança:
+security:
+  gosec: true
