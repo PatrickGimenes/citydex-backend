@@ -44,3 +44,13 @@ func (uu *UserUsecase) GetUserById(id_user string) (*model.UserResponse, error) 
 
 	return user, nil
 }
+
+func (uu *UserUsecase) UpdateUser(id_user string, user model.User) error {
+	err := uu.repository.UpdateUser(id_user, user)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

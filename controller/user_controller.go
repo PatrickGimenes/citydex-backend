@@ -47,12 +47,44 @@ func (u *UserController) CreateUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, insertedUser)
 }
 
+func (u *UserController) UpdateUser(c *gin.Context) {
+	id_user := c.Param("id_user")
+
+	if id_user == "" {
+		response := model.Response{
+			Message: "User id cannot be null",
+		}
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	var user model.User
+
+	err := c.BindJSON(&user)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	err = u.userUsecase.UpdateUser(id_user, user)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err)
+		return
+	}
+	response := model.Response{
+		Message: "User successfully updated ",
+	}
+	c.JSON(http.StatusNoContent, response)
+
+}
+
 func (u *UserController) GetUserById(c *gin.Context) {
 	id := c.Param("id_user")
 
 	if id == "" {
 		response := model.Response{
-			Message: "Id do usuário não pode ser nulo",
+			Message: "User id cannot be null",
 		}
 		c.JSON(http.StatusBadRequest, response)
 		return

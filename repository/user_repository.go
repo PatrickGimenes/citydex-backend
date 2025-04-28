@@ -78,6 +78,25 @@ func (ur *UserRepository) CreateUser(user model.User) (string, error) {
 	return id, nil
 }
 
+func (ur *UserRepository) UpdateUser(id_user string, user model.User) error {
+
+	hashedPassword, err := utils.HashPassword(user.Password)
+	user.Password = hashedPassword
+
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	query := "UPDATE USERS SET username = $1, password = $2, name = $3, home_city = (SELECT id FROM CITIES WHERE name = $4), update_At = CURRENT_DATE WHERE id = $5;"
+
+	_, err = ur.connection.Exec(query, user.Username, user.Password, user.Name, user.Home_city, id_user)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (ur *UserRepository) GetUserById(id_user string) (*model.UserResponse, error) {
 
 	query, err := ur.connection.Prepare("SELECT id, username, name, home_city, create_at, update_at FROM users WHERE id = $1")

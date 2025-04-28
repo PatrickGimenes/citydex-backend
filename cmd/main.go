@@ -35,6 +35,7 @@ func main() {
 	router.GET("/users", UserController.GetUsers)
 	router.GET("/user/:id_user", UserController.GetUserById)
 	router.POST("/register", UserController.CreateUser)
+	router.PUT("/update/:id_user", UserController.UpdateUser)
 
 	router.Run(":8080")
 }
