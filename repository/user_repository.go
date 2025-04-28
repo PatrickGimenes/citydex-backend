@@ -77,3 +77,34 @@ func (ur *UserRepository) CreateUser(user model.User) (string, error) {
 
 	return id, nil
 }
+
+func (ur *UserRepository) GetUserById(id_user string) (*model.UserResponse, error) {
+
+	query, err := ur.connection.Prepare("SELECT id, username, name, home_city, create_at, update_at FROM users WHERE id = $1")
+
+	if err != nil {
+		log.Print(err)
+		return nil, err
+	}
+
+	var user model.UserResponse
+
+	err = query.QueryRow(id_user).Scan(
+		&user.Id,
+		&user.Username,
+		&user.Name,
+		&user.Home_city,
+		&user.Create_At,
+		&user.Update_At,
+	)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	query.Close()
+	return &user, nil
+}

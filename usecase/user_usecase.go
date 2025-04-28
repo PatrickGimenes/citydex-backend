@@ -27,10 +27,20 @@ func (uu *UserUsecase) CreateUser(user model.User) (model.UserResponse, error) {
 	}
 
 	userResponse := model.UserResponse{
-		ID:       userId,
-		Username: user.Username,
-		Name:     user.Name,
-		HomeCity: user.Home_city,
+		Id:        userId,
+		Username:  user.Username,
+		Name:      user.Name,
+		Home_city: user.Home_city,
 	}
 	return userResponse, nil
+}
+
+func (uu *UserUsecase) GetUserById(id_user string) (*model.UserResponse, error) {
+	user, err := uu.repository.GetUserById(id_user)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }

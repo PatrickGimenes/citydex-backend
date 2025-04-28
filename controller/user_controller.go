@@ -46,3 +46,34 @@ func (u *UserController) CreateUser(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, insertedUser)
 }
+
+func (u *UserController) GetUserById(c *gin.Context) {
+	id := c.Param("id_user")
+
+	if id == "" {
+		response := model.Response{
+			Message: "Id do usuário não pode ser nulo",
+		}
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	user, err := u.userUsecase.GetUserById(id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	if user == nil {
+		response := model.Response{
+			Message: "User not found",
+		}
+		c.JSON(http.StatusNotFound, response)
+		return
+	}
+	c.JSON(http.StatusOK, user)
+
+}

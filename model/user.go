@@ -13,8 +13,10 @@ type User struct {
 }
 
 type UserResponse struct {
-	ID       string `json:"id"`
-	Username string `json:"username"`
-	Name     string `json:"name"`
-	HomeCity string `json:"home_city"`
+	Id        string    `json:"id"`
+	Username  string    `json:"username"`
+	Name      string    `json:"name"`
+	Home_city string    `json:"home_city"`
+	Create_At time.Time `json:"create_At"`
+	Update_At time.Time `json:"update_At"`
 }
